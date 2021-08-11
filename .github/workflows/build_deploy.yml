@@ -9,13 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Build
+    - name: Setup enviroment
       with:
         node-version: 14
       uses: actions/setup-node@v2
-    - run: yarn install
-    - run: yarn build
-    - run: ls
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.yarn-cache
+        key: ${{ runner.OS }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.OS }}-yarn-cache-
+    - name: Install dependencies
+      run: yarn install
+    - name: Build
+      run: yarn build
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
       with:
@@ -23,6 +31,6 @@ jobs:
         known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
     - name: Adding Known Hosts
       run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-    - name: Deploy with rsync
+    - name: Deploy
       run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/pudding.eduardotorres.dev
       
