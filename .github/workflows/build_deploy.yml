@@ -14,12 +14,7 @@ jobs:
         node-version: 14
       uses: actions/setup-node@v2
     - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.yarn-cache
-        key: ${{ runner.OS }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.OS }}-yarn-cache-
+      uses: c-hive/gha-yarn-cache@v2
     - name: Install dependencies
       run: yarn install
     - name: Build
