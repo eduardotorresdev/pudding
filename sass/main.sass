@@ -1,35 +1,29 @@
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css'
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap')
 
 @import '_variables'
 
-@import './components/_controls'
-@import './components/_animation'
-@import './components/_arrows'
-@import './components/_square'
-@import './components/_form'
-@import './components/_input'
-@import './components/_radio'
-@import './components/_button'
-@import './components/_scale'
-@import './components/_rotate'
+@import 'components/_canvas'
+@import 'components/_toolbar'
+@import 'components/_button'
 
 html, body
-    background: url('../img/bg.png') no-repeat center
+    display: flex
+    justify-content: center
+    align-items: center
+    background: $brown-500
     margin: 0
-    
+    min-height: 100vh
+
 *
-    font-family: 'Open Sans', sans-serif
+    font-family: 'Karla', sans-serif
 
 .app
+    background: $brown-600
     display: flex
     flex-direction: column
     justify-content: center
     width: 100%
     max-width: 900px
-    min-height: 100vh
-    margin: 0px auto
-
-label
-    color: $white
-    margin-bottom: 5px
+    border-radius: 20px
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 48px 100px 0px

@@ -1,1 +1,3 @@
-console.log("Hello World");
+import '../sass/main.sass';
+
+console.log('Hello World');
