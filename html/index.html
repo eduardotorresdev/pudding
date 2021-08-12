@@ -11,7 +11,7 @@
 <body>
     <noscript>JavaScript has to be enabled due to run the application</noscript>
     <main class="app">
-        <canvas width="900" height="400" class="canvas"></canvas>
+        <canvas width="900" height="500" class="canvas"></canvas>
         <footer class="toolbar">
             <button class="btn btn__dropdown">
                 <i class="fas fa-plus"></i>
@@ -20,9 +20,14 @@
             <button class="btn btn__dropdown">
                 <i class="fas fa-database"></i> Data <i class="fas fa-chevron-down"></i>
             </button>
-            <button class="btn">
-                <i class="fas fa-drafting-compass"></i> Transformation
-            </button>
+            <section class="toolbar__transformation transformation">
+                <button class="btn">
+                    <i class="fas fa-drafting-compass"></i> Transformation
+                </button>
+                <div class="transformation__dialog">
+
+                </div>
+            </section>
         </footer>
     </main>
 </body>

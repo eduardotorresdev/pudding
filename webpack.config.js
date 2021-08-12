@@ -32,8 +32,8 @@ const config = {
         test: /\.s[ac]ss$/i,
         use: [
           process.env.NODE_ENV !== "production"
-          ? "style-loader"
-          : MiniCssExtractPlugin.loader,
+            ? "style-loader"
+            : MiniCssExtractPlugin.loader,
           "css-loader",
           "resolve-url-loader",
           {
@@ -41,7 +41,8 @@ const config = {
             options: {
               sourceMap: true
             }
-          }
+          },
+          'import-glob-loader'
         ],
       },
       {
