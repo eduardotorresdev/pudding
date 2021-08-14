@@ -1,34 +1,32 @@
 .btn
-    background: $brown-600
-    color: $grey-500
-    height: 100%
-    font-size: 16px
+    background-color: #FFE0BB
+    color: #FF6363
+    font-size: 22px
     border: 0
+    padding: 5px 20px
+    border-radius: 10px
     cursor: pointer
-    border-radius: 8px
-    padding: 0 20px
-    margin-right: 5px
+    transition: all 150ms ease
+
+    &:hover
+        background-color: #FF6363
+        color: #FFE0BB
+
+.btn--secondary
+    background-color: #FF8E5D
+    color: #efefef
+
+    &:hover
+        background-color: #efefef
+        color: #FF8E5D
+
+.btn--third
+    background: linear-gradient(180deg, #F15252 50%, #ff8855 90%)
+    background-size: 100% 200%
+    background-position: bottom center
+    color: #efefef
     transition: all 300ms ease
 
-.btn:hover
-    background: #b36d52
-
-.btn__dropdown
-    position: relative
-    padding-right: 10px
-
-    i
-        margin-right: 5px
-
-    i:last-child
-        font-size: 14px
-        margin-right: 0
-        margin-left: 15px
-
-        &::after
-            content: ''
-            position: absolute
-            top: 0
-            right: 30px
-            height: 100%
-            border-left: 1px solid $brown-500
+    &:hover
+        color: #efefef
+        background-position: top center

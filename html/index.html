@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -11,23 +11,37 @@
 <body>
     <noscript>JavaScript has to be enabled due to run the application</noscript>
     <main class="app">
-        <canvas width="900" height="500" class="canvas"></canvas>
-        <footer class="toolbar">
-            <button class="btn btn__dropdown">
-                <i class="fas fa-plus"></i>
-                Add <i class="fas fa-chevron-down"></i>
-            </button>
-            <button class="btn btn__dropdown">
-                <i class="fas fa-database"></i> Data <i class="fas fa-chevron-down"></i>
-            </button>
-            <section class="toolbar__transformation transformation">
-                <button class="btn">
-                    <i class="fas fa-drafting-compass"></i> Transformation
+        <header class="header">
+            <h1 class="title">Pudding</h1>
+        </header>
+        <section class="content">
+            <canvas class="canvas"></canvas>
+            <button class="btn btn--secondary canvas__limpar">Limpar</button>
+            <aside class="toolbar">
+                <button class="btn btn--third">
+                    <i class="fas fa-file-archive"></i>
                 </button>
-                <div class="transformation__dialog">
-
-                </div>
-            </section>
+                <button class="btn">
+                    <i class="fas fa-magic"></i>
+                </button>
+                <button class="btn">
+                    <i class="far fa-object-group"></i>
+                </button>
+                <button class="btn">
+                    <i class="fas fa-bezier-curve"></i>
+                </button>
+                <button class="btn">
+                    <i class="fas fa-code"></i>
+                </button>
+                <button class="btn">
+                    <i class="fas fa-eraser"></i>
+                </button>
+            </aside>
+        </section>
+        <footer class="footer">
+            <a target="_blank" class="footer__link" href="https://github.com/eduardotorresdev/pudding">
+                github.com/eduardotorresdev
+            </a>
         </footer>
     </main>
 </body>
