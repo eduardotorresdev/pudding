@@ -4,7 +4,10 @@
     "noImplicitAny": true,
     "module": "es6",
     "target": "es2019",
-    "allowJs": true
+    "allowJs": true,
+    "lib": [
+      "DOM"
+    ]
   },
   "files": ["ts/index.ts"]
 }
