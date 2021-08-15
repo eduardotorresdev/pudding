@@ -121,7 +121,11 @@
                             <input type="number" id="rotation_y" class="input" disabled="disabled">
                         </div>
                     </div>
-                    <input type="range" class="transformation__rotation slider">
+                    <div class="transformation__slider slider">
+                        <input type="range" class="slider__input" min="0" max="360" value="0">
+                        <div class="slider__marker"></div>
+                        <div class="slider__progress"></div>
+                    </div>
                 </div>
                 <div class="transformation__group">
                     <h2 class="transformation__title">Espelhamento</h2>
