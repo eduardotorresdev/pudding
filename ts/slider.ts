@@ -8,7 +8,7 @@ sliders.forEach((slider) => {
 
     input.addEventListener('input', () => {
         const value = parseInt(input.value);
-        const max = parseInt(input.max);
+        const max = parseInt(input.max) || 100;
         const percentage = (value / max) * 100;
 
         progress.setAttribute('style', `width: ${percentage}%`);
