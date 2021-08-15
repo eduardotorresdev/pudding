@@ -6,6 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pudding</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="A WebGL application with Vanilla JavaScript">
+    <meta name="keywords" content="pudding, webgl, javascript, vanilla">
+    <meta name="theme-color" content="#4F1C3D">
+    <meta property="og:title" content="Pudding">
+    <meta property="og:description" content="A WebGL application with Vanilla JavaScript">
+    <meta property="og:image" content="<%= require('../img/bg.jpg') %>">
+    <meta property="og:site_name" content="pudding" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pudding.eduardotorres.dev">
 </head>
 
 <body>
@@ -16,7 +28,6 @@
         </header>
         <section class="content">
             <canvas class="canvas"></canvas>
-            <button class="btn btn--secondary canvas__limpar">Limpar</button>
             <aside class="toolbar">
                 <div class="dropdown dropdown--right">
                     <button class="btn btn--third">
@@ -31,22 +42,108 @@
                         </li>
                     </ul>
                 </div>
-                <button class="btn">
+                <button class="btn transformation__button">
                     <i class="fas fa-magic"></i>
                 </button>
                 <button class="btn">
                     <i class="far fa-object-group"></i>
                 </button>
-                <button class="btn">
-                    <i class="fas fa-bezier-curve"></i>
-                </button>
-                <button class="btn">
-                    <i class="fas fa-code"></i>
-                </button>
-                <button class="btn">
-                    <i class="fas fa-eraser"></i>
-                </button>
+                <div class="dropdown dropdown--right">
+                    <button class="btn">
+                        <i class="fas fa-bezier-curve"></i>
+                    </button>
+                    <ul class="dropdown__list">
+                        <li class="dropdown__title">
+                            <h2>Fecho Convexo</h2>
+                        </li>
+                        <li class="dropdown__item">
+                            <a href="#" class="dropdown__link">Sobre todos os pontos</a>
+                        </li>
+                        <li class="dropdown__item">
+                            <a href="#" class="dropdown__link">Sobre objetos selecionados</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown dropdown--right">
+                    <button class="btn">
+                        <i class="fas fa-code"></i>
+                    </button>
+                    <ul class="dropdown__list">
+                        <li class="dropdown__item">
+                            <a href="#" class="dropdown__link">Aplicar triangulação</a>
+                        </li>
+                        <li class="dropdown__item">
+                            <a href="#" class="dropdown__link">Aplicar diagrama de Voronoi</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown dropdown--right">
+                    <button class="btn">
+                        <i class="fas fa-eraser"></i>
+                    </button>
+                    <ul class="dropdown__list">
+                        <li class="dropdown__item">
+                            <a href="#" class="dropdown__link">Apagar todos</a>
+                        </li>
+                        <li class="dropdown__item">
+                            <a href="#" class="dropdown__link">Apagar selecionados</a>
+                        </li>
+                    </ul>
+                </div>
             </aside>
+            <aside class="transformation">
+                <div class="transformation__group">
+                    <h2 class="transformation__title">Escala</h2>
+                    <div class="transformation__form">
+                        <div class="input__group">
+                            <label for="scale_x">x</label>
+                            <input type="number" id="scale_x" class="input" value="1">
+                        </div>
+                        <div class="input__group">
+                            <label for="scale_y">y</label>
+                            <input type="number" id="scale_y" class="input" value="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="transformation__group">
+                    <h2 class="transformation__title">Rotação</h2>
+                    <div class="checkbox transformation__checkbox">
+                        <input type="checkbox" id="rotation__central" class="checkbox__input" checked="checked">
+                        <label for="rotation__central" class="checkbox__label">Ponto central</label>
+                    </div>
+                    <div class="transformation__form">
+                        <div class="input__group">
+                            <label for="rotation_x">x</label>
+                            <input type="number" id="rotation_x" class="input" disabled="disabled">
+                        </div>
+                        <div class="input__group">
+                            <label for="rotation_y">y</label>
+                            <input type="number" id="rotation_y" class="input" disabled="disabled">
+                        </div>
+                    </div>
+                    <input type="range" class="transformation__rotation slider">
+                </div>
+                <div class="transformation__group">
+                    <h2 class="transformation__title">Espelhamento</h2>
+                    <div class="transformation__form">
+                        <div class="input__group">
+                            <label for="mirror_x">x</label>
+                            <input type="number" id="mirror_x" class="input" value="1">
+                        </div>
+                        <div class="input__group ">
+                            <label for="mirror_y">y</label>
+                            <input type="number" id="mirror_y" class="input" value="">
+                        </div>
+                    </div>
+                    <button class="btn transformation__espelhar btn-secondary">Espelhar</button>
+                </div>
+            </aside>
+            <div class="translation">
+                <button class="btn translation__up btn--secondary"><i class="fas fa-chevron-up"></i></button>
+                <button class="btn translation__right btn--secondary"><i class="fas fa-chevron-right"></i></button>
+                <button class="btn translation__bottom btn--secondary"><i class="fas fa-chevron-down"></i></button>
+                <button class="btn translation__left btn--secondary"><i class="fas fa-chevron-left"></i></button>
+            </div>
         </section>
         <footer class="footer">
             <a target="_blank" class="footer__link" href="https://github.com/eduardotorresdev/pudding">

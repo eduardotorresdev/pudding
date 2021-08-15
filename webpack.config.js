@@ -10,12 +10,13 @@ const config = {
     path: path.resolve(__dirname, "dist"),
   },
   devServer: {
-    open: true,
+    open: false,
     host: "localhost",
     hot: true,
     port: '3000'
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './html/index.html'),
       favicon: path.resolve(__dirname, './html/favicon.ico')
@@ -31,9 +32,9 @@ const config = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          process.env.NODE_ENV !== "production"
-            ? "style-loader"
-            : MiniCssExtractPlugin.loader,
+          isProduction
+            ? MiniCssExtractPlugin.loader
+            : "style-loader",
           "css-loader",
           "resolve-url-loader",
           {
@@ -59,8 +60,6 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = "production";
-
-    config.plugins.push(new MiniCssExtractPlugin());
   } else {
     config.mode = "development";
   }

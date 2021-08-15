@@ -30,3 +30,13 @@
     &:hover
         color: $cor-cinza-400
         background-position: top center
+
+.btn--active 
+    @extend .btn--secondary
+    background-color: $cor-laranja-500
+    box-shadow: 0 0 20px 5px transparentize($cor-laranja-500, 0.3)
+
+    &:hover
+        background-color: $cor-laranja-500
+        color: $cor-cinza-400
+        box-shadow: 0 0 10px 5px transparentize($cor-laranja-500, 0.5)
