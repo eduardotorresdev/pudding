@@ -38,6 +38,28 @@ class Polyline extends Element {
     changeCurrentLineEnd(end: Coordinates) {
         this.currentLine.changeEnd(end);
     }
+
+    /**
+     * export
+     * @return {Object}
+     */
+    export() {
+        return {
+            class: 'Polyline',
+            dados: JSON.stringify(this),
+        };
+    }
+
+    /**
+     * getIndices
+     * @param {number} offset
+     * @return {number[]}
+     */
+    getIndices(offset: number) {
+        return this.lines.map((line, i) => {
+            return line.getIndices(offset + i);
+        }).flat();
+    }
 }
 
 export default Polyline;

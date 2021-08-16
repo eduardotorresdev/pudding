@@ -1,7 +1,9 @@
 import transformation from './transfomation';
+import element from './element';
 
 const rootReducer = {
-    transformation: transformation,
+    transformation,
+    element,
 };
 
 export default rootReducer;

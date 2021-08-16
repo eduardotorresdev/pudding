@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
+interface TransformationAction {
+    type: string
+}
+
 interface TransformationState {
-    translation: Point;
-    scale: Point;
+    translation: Coordinates;
+    scale: Coordinates;
     rotation: {
         center: boolean;
-        coords: Point | null;
+        coords: Coordinates | null;
         degrees: number;
     };
     mirror: {

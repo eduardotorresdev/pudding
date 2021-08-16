@@ -9,7 +9,7 @@
         "noEmit": true,
         "baseUrl": "./ts",
         "paths": {
-            "*": ["types/*"]
+            "*": ["_types/*"]
         },
     },
     "include": [

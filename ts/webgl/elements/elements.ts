@@ -1,0 +1,187 @@
+import Line from './line';
+import Point from './point';
+import Polyline from './polyline';
+import Polygon from './polygon';
+import canvas from '../canvas';
+
+interface ElementsImport {
+    class: string;
+    dados: any;
+}
+
+/**
+ * Elements
+ */
+class Elements {
+    list: Array<Point | Line | Polyline | Polygon> = [];
+    points: Array<Point> = [];
+    lines: Array<Line> = [];
+    polylines: Array<Polyline> = [];
+    polygons: Array<Polygon> = [];
+
+    /**
+     * addElement
+     * @param {Point|Line|Polyline|Polygon} element
+     */
+    addElement(element: Point | Line | Polyline | Polygon) {
+        this.list.push(element);
+        if (element instanceof Point) {
+            this.points.push(element);
+        } else if (element instanceof Line) {
+            this.lines.push(element);
+        } else if (element instanceof Polyline) {
+            this.polylines.push(element);
+        } else if (element instanceof Polygon) {
+            this.polygons.push(element);
+        }
+        this.changeList();
+    }
+
+    /**
+     * changeList
+     */
+    changeList() {
+        const content = document.querySelector('.content');
+        if (this.list.length === 0) {
+            content.classList.add('content--empty');
+        } else {
+            content.classList.remove('content--empty');
+        }
+        canvas.draw();
+    }
+
+    /**
+     * getData
+     * @return {number[]}
+     */
+    getData() {
+        let data: number[] = [];
+        [this.points, this.lines, this.polylines, this.polygons]
+            .flat()
+            .forEach((element) => {
+                data = data.concat(
+                    element
+                        .getCoords()
+                        .map((coords) => {
+                            return Object.values(coords);
+                        })
+                        .flat(),
+                );
+            });
+
+        return data;
+    }
+
+    /**
+     * getIndices
+     * @return {number[]}
+     */
+    getIndices() {
+        let offset = 0;
+        let indices: number[] = [];
+
+        this.points.forEach((point) => {
+            indices = indices.concat(point.getIndices(offset));
+            offset = offset + 1;
+        });
+        this.lines.forEach((line) => {
+            indices = indices.concat(line.getIndices(offset));
+            offset = offset + 2;
+        });
+        this.polylines.forEach((polyline) => {
+            indices = indices.concat(polyline.getIndices(offset));
+            offset = offset + 2;
+        });
+        this.polygons.forEach((polygon) => {
+            indices = indices.concat(polygon.getIndices(offset));
+            offset = offset + 2;
+        });
+
+        return indices;
+    }
+
+    /**
+     * getData
+     * @return {number[]}
+     */
+    getColors() {
+        const data: number[] = [];
+        this.list.forEach((element) => {
+            data.concat(
+                element
+                    .getCoords()
+                    .map(() => {
+                        return [1, 1, 1];
+                    })
+                    .flat(),
+            );
+        });
+        return data;
+    }
+
+    /**
+     * export
+     * @return {Object}
+     */
+    export() {
+        const data = this.list.map((value) => {
+            return value.export();
+        });
+
+        return JSON.stringify(data);
+    }
+
+    /**
+     * import
+     *
+     * @param {string} data
+     */
+    import(data: string) {
+        this.clear(false);
+
+        const classes: { [key: string]: any } = {
+            Point,
+            Line,
+            Polyline,
+            Polygon,
+        };
+
+        const elements: ElementsImport[] = JSON.parse(data);
+        elements.forEach((element) => {
+            element.dados = JSON.parse(element.dados);
+            Object.setPrototypeOf(
+                element.dados,
+                classes[element.class].prototype,
+            );
+            this.addElement(element.dados);
+        });
+    }
+    /**
+     * clear
+     *
+     * @param {boolean} trigger
+     */
+    clear(trigger: boolean = true) {
+        while (this.list.length > 0) {
+            this.list.pop();
+        }
+        while (this.points.length > 0) {
+            this.points.pop();
+        }
+        while (this.lines.length > 0) {
+            this.lines.pop();
+        }
+        while (this.polylines.length > 0) {
+            this.polylines.pop();
+        }
+        while (this.polygons.length > 0) {
+            this.polygons.pop();
+        }
+
+        if (trigger) this.changeList();
+    }
+}
+
+const elements = new Elements();
+
+export default elements;

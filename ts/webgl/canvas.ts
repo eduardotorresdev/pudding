@@ -1,4 +1,6 @@
 /* eslint-disable require-jsdoc */
+import elements from './elements/elements';
+
 interface Square {
     topLeft: PointData;
     topRight: PointData;
@@ -18,7 +20,6 @@ class Drawer {
     canvas: HTMLCanvasElement;
     gl: WebGLRenderingContext;
     points: Square;
-    vertices: number[];
     colors: number[];
     indices = [0, 1, 2, 0, 3, 2];
     vertexBuffer: WebGLBuffer;
@@ -30,8 +31,8 @@ class Drawer {
     matrixLocation: WebGLUniformLocation;
     coord: number;
     translation = {
-        x: 50,
-        y: 50,
+        x: 0,
+        y: 0,
     };
     scalation = {
         x: 1,
@@ -100,38 +101,8 @@ class Drawer {
         this.canvas = canvas;
         this.gl = canvas.getContext('webgl');
         this.points = this.getPoints();
-        this.vertices = this.createVertices();
         this.colors = this.createColors();
-        this.bindSquare();
-        this.bindColors();
-        this.bindIndices();
-        this.createVertexShader();
-        this.createFragShader();
-
-        this.shaderProgram = this.gl.createProgram();
-        this.gl.attachShader(this.shaderProgram, this.vertShader);
-        this.gl.attachShader(this.shaderProgram, this.fragShader);
-        this.gl.linkProgram(this.shaderProgram);
-
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
-        this.coord = this.gl.getAttribLocation(
-            this.shaderProgram,
-            'coordinates',
-        );
-        this.gl.vertexAttribPointer(this.coord, 2, this.gl.FLOAT, false, 0, 0);
-
-        this.matrixLocation = this.gl.getUniformLocation(
-            this.shaderProgram,
-            'u_matrix',
-        );
-
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
-        const color = this.gl.getAttribLocation(this.shaderProgram, 'color');
-        this.gl.vertexAttribPointer(color, 3, this.gl.FLOAT, false, 0, 0);
-        this.gl.enableVertexAttribArray(color);
-
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        this.gl.clearColor(0, 0, 0, 0);
+        this.gl.lineWidth(10);
     }
 
     translate(x: number, y: number) {
@@ -155,6 +126,49 @@ class Drawer {
     }
 
     draw() {
+        this.bindSquare();
+        this.bindColors();
+        this.bindIndices();
+        this.createVertexShader();
+        this.createFragShader();
+
+        this.shaderProgram = this.gl.createProgram();
+        this.gl.attachShader(this.shaderProgram, this.vertShader);
+        this.gl.attachShader(this.shaderProgram, this.fragShader);
+        this.gl.linkProgram(this.shaderProgram);
+
+        const indices = elements.getIndices();
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        this.gl.bufferData(
+            this.gl.ELEMENT_ARRAY_BUFFER,
+            new Uint16Array(indices),
+            this.gl.DYNAMIC_DRAW,
+        );
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
+        this.gl.bufferData(
+            this.gl.ARRAY_BUFFER,
+            new Float32Array(elements.getData()),
+            this.gl.DYNAMIC_DRAW,
+        );
+        this.coord = this.gl.getAttribLocation(
+            this.shaderProgram,
+            'coordinates',
+        );
+        this.gl.vertexAttribPointer(this.coord, 2, this.gl.FLOAT, false, 0, 0);
+
+        this.matrixLocation = this.gl.getUniformLocation(
+            this.shaderProgram,
+            'u_matrix',
+        );
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+        const color = this.gl.getAttribLocation(this.shaderProgram, 'color');
+        this.gl.vertexAttribPointer(color, 3, this.gl.FLOAT, false, 0, 0);
+        this.gl.enableVertexAttribArray(color);
+
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+        this.gl.clearColor(0, 0, 0, 0);
         this.gl.viewport(
             0,
             0,
@@ -187,12 +201,42 @@ class Drawer {
         // Set the matrix.
         this.gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
 
-        this.gl.drawElements(
-            this.gl.TRIANGLES,
-            this.indices.length,
-            this.gl.UNSIGNED_SHORT,
-            0,
-        );
+
+        if (elements.points.length > 0) {
+            this.gl.drawElements(
+                this.gl.POINTS,
+                elements.points.length,
+                this.gl.UNSIGNED_SHORT,
+                0,
+            );
+        }
+
+        if (elements.lines.length > 0) {
+            this.gl.drawElements(
+                this.gl.LINES,
+                elements.lines.length * 2,
+                this.gl.UNSIGNED_SHORT,
+                elements.points.length * 2,
+            );
+        }
+
+        if (elements.polylines.length > 0) {
+            this.gl.drawElements(
+                this.gl.LINE_STRIP,
+                elements.polylines.length / 2,
+                this.gl.UNSIGNED_SHORT,
+                elements.lines.length * 2,
+            );
+        }
+
+        if (elements.polygons.length > 0) {
+            this.gl.drawElements(
+                this.gl.LINE_LOOP,
+                elements.polygons.length / 2,
+                this.gl.UNSIGNED_SHORT,
+                elements.polylines.length * 2,
+            );
+        }
     }
 
     /**
@@ -223,6 +267,7 @@ class Drawer {
             'varying vec3 vColor;' +
             'void main(void) {' +
             'gl_Position = vec4(u_matrix * vec3(coordinates, 1), 1);' +
+            'gl_PointSize = 10.0;' +
             'vColor = color;' +
             '}';
 
@@ -241,8 +286,8 @@ class Drawer {
 
         this.gl.bufferData(
             this.gl.ARRAY_BUFFER,
-            new Float32Array(this.vertices),
-            this.gl.STATIC_DRAW,
+            new Float32Array(elements.getData()),
+            this.gl.DYNAMIC_DRAW,
         );
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
@@ -342,4 +387,7 @@ class Drawer {
     }
 }
 
-export default Drawer;
+const element: HTMLCanvasElement = document.querySelector('.canvas');
+
+const instance = new Drawer(element);
+export default instance;

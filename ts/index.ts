@@ -5,12 +5,12 @@ import './dropdown';
 import './transformation';
 import './slider';
 import './store';
-import Drawer from './webgl/canvas';
+import './webgl';
+import canvas from './webgl/canvas';
+import {store} from './store';
 
-const canvas:HTMLCanvasElement|null = document.querySelector('.canvas');
-if (canvas) {
-    const drawer = new Drawer(canvas);
+canvas.draw();
 
-    drawer.draw();
-}
-
+store.subscribe(() => {
+    canvas.draw();
+});
