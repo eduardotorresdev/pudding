@@ -21,12 +21,16 @@ function activateButton(element: Element, elementClass: string) {
  * deactivateButtons
  * @param {Element} exception
  */
-function deactivateButtons(exception: Element) {
+function deactivateButtons(exception: Element | null = null) {
     buttons.forEach((button) => {
-        if (button === exception) return;
+        if (exception !== null && button === exception) return;
         button.classList.remove('btn--active');
     });
 }
+
+store.subscribe(() => {
+    if (store.getState().element === null) deactivateButtons();
+});
 
 point.addEventListener('click', (e) =>
     activateButton(e.currentTarget as Element, 'point'),
