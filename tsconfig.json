@@ -1,13 +1,19 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "module": "es6",
-    "target": "es2019",
-    "allowJs": true,
-    "lib": [
-      "DOM"
-    ]
-  },
-  "files": ["ts/index.ts"]
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es2019",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "noEmit": true,
+        "baseUrl": "./ts",
+        "paths": {
+            "*": ["types/*"]
+        },
+    },
+    "include": [
+        "./ts"
+    ],
+    "files": ["./ts/index.ts"]
 }
