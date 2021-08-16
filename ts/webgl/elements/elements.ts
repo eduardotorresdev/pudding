@@ -29,10 +29,10 @@ class Elements {
             this.points.push(element);
         } else if (element instanceof Line) {
             this.lines.push(element);
-        } else if (element instanceof Polyline) {
-            this.polylines.push(element);
         } else if (element instanceof Polygon) {
             this.polygons.push(element);
+        } else if (element instanceof Polyline) {
+            this.polylines.push(element);
         }
         this.changeList();
     }
@@ -84,17 +84,18 @@ class Elements {
             indices = indices.concat(point.getIndices(offset));
             offset = offset + 1;
         });
+
         this.lines.forEach((line) => {
             indices = indices.concat(line.getIndices(offset));
             offset = offset + 2;
         });
         this.polylines.forEach((polyline) => {
             indices = indices.concat(polyline.getIndices(offset));
-            offset = offset + 2;
+            offset = offset + polyline.getIndices(offset).length;
         });
         this.polygons.forEach((polygon) => {
             indices = indices.concat(polygon.getIndices(offset));
-            offset = offset + 2;
+            offset = offset + polygon.getIndices(offset).length;
         });
 
         return indices;
@@ -140,19 +141,27 @@ class Elements {
         this.clear(false);
 
         const classes: { [key: string]: any } = {
-            Point,
-            Line,
-            Polyline,
-            Polygon,
+            Point: Point,
+            Line: Line,
+            Polyline: Polyline,
+            Polygon: Polygon,
         };
-
         const elements: ElementsImport[] = JSON.parse(data);
         elements.forEach((element) => {
             element.dados = JSON.parse(element.dados);
+            if (element.class === 'Polyline' || element.class === 'Polygon') {
+                element.dados.lines = element.dados.lines.map((line: any) => {
+                    return Object.setPrototypeOf(
+                        line,
+                        Line.prototype,
+                    );
+                });
+            }
             Object.setPrototypeOf(
                 element.dados,
                 classes[element.class].prototype,
             );
+
             this.addElement(element.dados);
         });
     }

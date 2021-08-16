@@ -201,7 +201,6 @@ class Drawer {
         // Set the matrix.
         this.gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
 
-
         if (elements.points.length > 0) {
             this.gl.drawElements(
                 this.gl.POINTS,
@@ -220,22 +219,38 @@ class Drawer {
             );
         }
 
+        let polylineLength = 0;
         if (elements.polylines.length > 0) {
-            this.gl.drawElements(
-                this.gl.LINE_STRIP,
-                elements.polylines.length / 2,
-                this.gl.UNSIGNED_SHORT,
-                elements.lines.length * 2,
-            );
+            elements.polylines.forEach((polyline) => {
+                const length = polyline.getIndices(0).length;
+
+                this.gl.drawElements(
+                    this.gl.LINE_STRIP,
+                    length,
+                    this.gl.UNSIGNED_SHORT,
+                    (elements.points.length +
+                        elements.lines.length * 2 +
+                        polylineLength) * 2,
+                );
+                polylineLength += length;
+            });
         }
 
         if (elements.polygons.length > 0) {
-            this.gl.drawElements(
-                this.gl.LINE_LOOP,
-                elements.polygons.length / 2,
-                this.gl.UNSIGNED_SHORT,
-                elements.polylines.length * 2,
-            );
+            let lastLength = 0;
+            elements.polygons.forEach((polygon, i) => {
+                const length = polygon.getIndices(0).length;
+
+                this.gl.drawElements(
+                    this.gl.LINE_LOOP,
+                    length,
+                    this.gl.UNSIGNED_SHORT,
+                    (elements.points.length +
+                        elements.lines.length * 2 +
+                        polylineLength + lastLength) * 2,
+                );
+                lastLength += length;
+            });
         }
     }
 
