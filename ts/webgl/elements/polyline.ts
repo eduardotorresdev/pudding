@@ -4,15 +4,26 @@ import Line from './line';
  * Polyline
  */
 class Polyline {
+    order: number = 3;
     initialLine: Line;
     currentLine: Line;
     lines: Line[] = [];
+    color: Color;
     /**
      *
-     * @param {Coordinates} start
+     * @param {Coordinate} start
+     * @param {Color} color
      */
-    constructor(start: Coordinates) {
-        this.currentLine = new Line(start, {x: start.x + 1, y: start.y + 1});
+    constructor(
+        start: Coordinate,
+        color: Color = {red: 50, green: 217, blue: 133},
+    ) {
+        this.color = color;
+        this.currentLine = new Line(
+            start,
+            {x: start.x + 1, y: start.y + 1},
+            this.color,
+        );
         this.initialLine = this.currentLine;
         this.lines.push(this.currentLine);
     }
@@ -20,10 +31,14 @@ class Polyline {
     /**
      * addLine
      *
-     * @param {Coordinates} start
+     * @param {Coordinate} start
      */
-    addLine(start: Coordinates) {
-        this.currentLine = new Line(start, {x: start.x + 1, y: start.y + 1});
+    addLine(start: Coordinate) {
+        this.currentLine = new Line(
+            start,
+            {x: start.x + 1, y: start.y + 1},
+            this.color,
+        );
         this.lines.push(this.currentLine);
     }
 
@@ -32,7 +47,7 @@ class Polyline {
      *
      * @param {Coordinates} end
      */
-    changeCurrentLineEnd(end: Coordinates) {
+    changeCurrentLineEnd(end: Coordinate) {
         this.currentLine.changeEnd(end);
     }
 
@@ -63,12 +78,24 @@ class Polyline {
 
     /**
      * getCoords
-     * @return {Coordinates[]}
+     * @return {Coordinate[]}
      */
     getCoords() {
-        let dados: Coordinates[] = [];
+        let dados: Coordinate[] = [];
         this.lines.forEach((line) => {
             dados = dados.concat(line.getCoords());
+        });
+        return dados;
+    }
+
+    /**
+     * getColors
+     * @return {Color[]}
+     */
+    getColors() {
+        let dados: Color[] = [];
+        this.lines.forEach((line) => {
+            dados = dados.concat(line.getColors());
         });
         return dados;
     }

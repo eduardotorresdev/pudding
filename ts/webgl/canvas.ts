@@ -145,6 +145,15 @@ class Drawer {
             this.gl.DYNAMIC_DRAW,
         );
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+        this.gl.bufferData(
+            this.gl.ARRAY_BUFFER,
+            new Float32Array(elements.getColors()),
+            this.gl.DYNAMIC_DRAW,
+        );
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
+
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
         this.gl.bufferData(
             this.gl.ARRAY_BUFFER,
@@ -282,7 +291,7 @@ class Drawer {
             'varying vec3 vColor;' +
             'void main(void) {' +
             'gl_Position = vec4(u_matrix * vec3(coordinates, 1), 1);' +
-            'gl_PointSize = 10.0;' +
+            'gl_PointSize = 5.0;' +
             'vColor = color;' +
             '}';
 
@@ -333,8 +342,8 @@ class Drawer {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
         this.gl.bufferData(
             this.gl.ARRAY_BUFFER,
-            new Float32Array(this.colors),
-            this.gl.STATIC_DRAW,
+            new Float32Array(elements.getColors()),
+            this.gl.DYNAMIC_DRAW,
         );
     }
 

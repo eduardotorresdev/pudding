@@ -102,21 +102,27 @@ class Elements {
     }
 
     /**
-     * getData
+     * getColors
      * @return {number[]}
      */
     getColors() {
-        const data: number[] = [];
-        this.list.forEach((element) => {
-            data.concat(
-                element
-                    .getCoords()
-                    .map(() => {
-                        return [1, 1, 1];
-                    })
-                    .flat(),
-            );
-        });
+        let data: number[] = [];
+        this.list
+            .sort((a, b) => {
+                return a.order - b.order;
+            })
+            .forEach((element) => {
+                data = data.concat(
+                    element
+                        .getColors()
+                        .map((colors) => {
+                            return Object.values(colors).map(
+                                (color) => color / 255,
+                            );
+                        })
+                        .flat(),
+                );
+            });
         return data;
     }
 
@@ -151,10 +157,7 @@ class Elements {
             element.dados = JSON.parse(element.dados);
             if (element.class === 'Polyline' || element.class === 'Polygon') {
                 element.dados.lines = element.dados.lines.map((line: any) => {
-                    return Object.setPrototypeOf(
-                        line,
-                        Line.prototype,
-                    );
+                    return Object.setPrototypeOf(line, Line.prototype);
                 });
             }
             Object.setPrototypeOf(

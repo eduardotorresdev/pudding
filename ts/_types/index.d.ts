@@ -4,7 +4,13 @@ interface Point {
     y: number;
 }
 
-interface Coordinates {
+interface Coordinate {
     x: number;
     y: number;
+}
+
+interface Color {
+    red: number,
+    green: number,
+    blue: number
 }

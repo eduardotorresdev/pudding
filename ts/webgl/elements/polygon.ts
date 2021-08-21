@@ -4,12 +4,22 @@ import Polyline from './polyline';
  * Polyline
  */
 class Polygon extends Polyline {
+    order: number = 4;
+
     /**
      *
-     * @param {Coordinates} start
+     * @param {Coordinate} start
+     * @param {Color} color
      */
-    constructor(start: Coordinates) {
-        super(start);
+    constructor(
+        start: Coordinate,
+        color: Color = {
+            red: 110,
+            green: 39,
+            blue: 204,
+        },
+    ) {
+        super(start, color);
     }
 
     /**

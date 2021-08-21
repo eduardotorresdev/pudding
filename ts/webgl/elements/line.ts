@@ -4,16 +4,23 @@ import canvas from '../canvas';
  * Line
  */
 class Line extends Element {
-    start: Coordinates;
-    end: Coordinates;
+    order:number = 2;
+    start: Coordinate;
+    end: Coordinate;
     /**
      *
-     * @param {Coordinates} start
-     * @param {Coordinates} end
+     * @param {Coordinate} start
+     * @param {Coordinate} end
+     * @param {Color} color
      */
     constructor(
-        start: Coordinates,
-        end: Coordinates = {x: start.x + 1, y: start.y + 1},
+        start: Coordinate,
+        end: Coordinate = {x: start.x + 1, y: start.y + 1},
+        color: Color = {
+            red: 255,
+            green: 0,
+            blue: 100,
+        },
     ) {
         super();
 
@@ -21,6 +28,7 @@ class Line extends Element {
         this.end = end;
         this.coords.push(this.start);
         this.coords.push(this.end);
+        this.colors.push(color, color);
     }
 
     /**
@@ -37,7 +45,7 @@ class Line extends Element {
      *
      * @param {Coordinates} end
      */
-    changeEnd(end: Coordinates) {
+    changeEnd(end: Coordinate) {
         this.coords[1] = end;
         canvas.draw();
     }
