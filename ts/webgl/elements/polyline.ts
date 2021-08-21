@@ -114,6 +114,38 @@ class Polyline {
             })
             .flat();
     }
+
+    /**
+     * isSelected
+     *
+     * @param {SelectedArea} area
+     * @return {boolean}
+     */
+    isSelected(area: SelectedArea) {
+        for (const line of this.lines) {
+            if (line.isSelected(area)) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * select
+     */
+    select() {
+        this.lines.forEach((line) => {
+            line.select();
+        });
+    }
+
+    /**
+     * select
+     */
+    deselect() {
+        this.lines.forEach((line) => {
+            line.deselect();
+        });
+    }
 }
 
 export default Polyline;

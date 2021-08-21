@@ -127,6 +127,29 @@ class Elements {
     }
 
     /**
+     *  getSelecteds
+     * @param {SelectedArea} area
+     * @return {Array<Point | Line | Polyline | Polygon>}
+     */
+    getSelecteds(area: SelectedArea) {
+        const selecteds = this.list.filter((element) => {
+            if (element.isSelected(area)) {
+                element.select();
+
+                return true;
+            }
+
+            element.deselect();
+
+            return false;
+        });
+
+        canvas.draw();
+
+        return selecteds;
+    }
+
+    /**
      * export
      * @return {Object}
      */
@@ -168,6 +191,19 @@ class Elements {
             this.addElement(element.dados);
         });
     }
+
+    /**
+     * remover
+     * @param {Point | Line | Polyline | Polygon} element
+     */
+    remover(element: Point | Line | Polyline | Polygon) {
+        this.list = this.list.filter((item) => item !== element);
+        this.points = this.points.filter((item) => item !== element);
+        this.lines = this.lines.filter((item) => item !== element);
+        this.polylines = this.polylines.filter((item) => item !== element);
+        this.polygons = this.polygons.filter((item) => item !== element);
+    }
+
     /**
      * clear
      *

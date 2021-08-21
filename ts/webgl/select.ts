@@ -1,5 +1,6 @@
 import {selectActions} from '../actions';
 import {store} from '../store';
+import elements from './elements/elements';
 
 const selectionArea = document.createElement('div');
 selectionArea.classList.add('select__area');
@@ -28,6 +29,7 @@ let initialArea = {
     x: 0,
     y: 0,
 };
+
 canvas.addEventListener('mousedown', (e: MouseEvent) => {
     if (!store.getState().select.active) return;
 
@@ -70,12 +72,32 @@ canvas.addEventListener('mousemove', (e: MouseEvent) => {
     }
 });
 
-canvas.addEventListener('mouseup', (e: MouseEvent) => {
+/**
+ * clearSelection
+ */
+function clearSelection() {
     if (!selecting || !document.body.contains(selectionArea)) return;
-    document.body.removeChild(selectionArea);
-});
 
-canvas.addEventListener('mouseleave', (e: MouseEvent) => {
-    if (!selecting || !document.body.contains(selectionArea)) return;
+    const canvasRect = canvas.getBoundingClientRect();
+    const areaRect = selectionArea.getBoundingClientRect();
+    const xmin = areaRect.left - canvasRect.left;
+    const xmax = areaRect.width + xmin;
+    const ymin = areaRect.top - canvasRect.top;
+    const ymax = areaRect.height + ymin;
+
+    store.dispatch(
+        selectActions.setElements(
+            elements.getSelecteds({
+                xmin,
+                xmax,
+                ymin,
+                ymax,
+            }),
+        ),
+    );
+
     document.body.removeChild(selectionArea);
-});
+}
+
+canvas.addEventListener('mouseup', clearSelection);
+canvas.addEventListener('mouseleave', clearSelection);

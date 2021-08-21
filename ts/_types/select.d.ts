@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
-interface SelectState {
-    active: boolean;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+interface SelectedArea {
+    xmin: number;
+    ymin: number;
+    xmax: number;
+    ymax: number;
 }

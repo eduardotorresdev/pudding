@@ -1,3 +1,7 @@
+import Point from '../webgl/elements/point';
+import Line from '../webgl/elements/line';
+import Polyline from '../webgl/elements/polyline';
+import Polygon from '../webgl/elements/polygon';
 import {selectTypes} from '../redux-types';
 
 /**
@@ -21,13 +25,19 @@ export const selectActions = {
             type: selectTypes.TOGGLE,
         };
     },
-    setArea: function(x: number, y: number, width: number, height: number) {
+    setArea: function(xmin: number, ymin: number, xmax: number, ymax: number) {
         return {
             type: selectTypes.SET_AREA,
-            x: x,
-            y: y,
-            width: width,
-            height: height,
+            xmin: xmin,
+            ymin: ymin,
+            xmax: xmax,
+            ymax: ymax,
+        };
+    },
+    setElements: function(elements: Array<Point | Line | Polyline | Polygon>) {
+        return {
+            type: selectTypes.SET_ELEMENTS,
+            elements,
         };
     },
 };

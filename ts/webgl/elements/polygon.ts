@@ -1,3 +1,4 @@
+import Line from './line';
 import Polyline from './polyline';
 
 /**
@@ -31,6 +32,26 @@ class Polygon extends Polyline {
             class: 'Polygon',
             dados: JSON.stringify(this),
         };
+    }
+
+    /**
+     * isSelected
+     *
+     * @param {SelectedArea} area
+     * @return {boolean}
+     */
+    isSelected(area: SelectedArea) {
+        for (const line of this.lines) {
+            if (line.isSelected(area)) return true;
+        }
+
+        const joiningLine = new Line(
+            this.lines[0].start,
+            this.lines[this.lines.length - 1].end,
+        );
+        if (joiningLine.isSelected(area)) return true;
+
+        return false;
     }
 }
 

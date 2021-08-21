@@ -1,19 +1,34 @@
 import {selectTypes} from '../redux-types';
+import Line from '../webgl/elements/line';
+import Point from '../webgl/elements/point';
+import Polygon from '../webgl/elements/polygon';
+import Polyline from '../webgl/elements/polyline';
 
 interface SelectAction {
     type: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+    xmin?: number;
+    ymin?: number;
+    xmax?: number;
+    ymax?: number;
+    elements?: Array<Point | Line | Polyline | Polygon>
+}
+
+interface SelectState {
+    active: boolean;
+    xmin: number;
+    ymin: number;
+    xmax: number;
+    ymax: number;
+    elements?: Array<Point | Line | Polyline | Polygon>;
 }
 
 const initialState: SelectState = {
     active: false,
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
+    xmin: 0,
+    ymin: 0,
+    xmax: 0,
+    ymax: 0,
+    elements: [],
 };
 
 const selectReducer = (state = initialState, action: SelectAction) => {
@@ -30,10 +45,16 @@ const selectReducer = (state = initialState, action: SelectAction) => {
     case selectTypes.SET_AREA:
         state = {
             ...state,
-            x: action.x,
-            y: action.y,
-            width: action.width,
-            height: action.height,
+            xmin: action.xmin,
+            ymin: action.ymin,
+            xmax: action.xmax,
+            ymax: action.ymax,
+        };
+        return state;
+    case selectTypes.SET_ELEMENTS:
+        state = {
+            ...state,
+            elements: action.elements,
         };
         return state;
     default:

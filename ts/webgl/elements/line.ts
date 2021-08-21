@@ -1,10 +1,12 @@
 import Element from './element';
 import canvas from '../canvas';
+import {lineIntersectionChecker} from './utils';
 /**
  * Line
  */
 class Line extends Element {
-    order:number = 2;
+    color: Color;
+    order: number = 2;
     start: Coordinate;
     end: Coordinate;
     /**
@@ -26,6 +28,7 @@ class Line extends Element {
 
         this.start = start;
         this.end = end;
+        this.color = color;
         this.coords.push(this.start);
         this.coords.push(this.end);
         this.colors.push(color, color);
@@ -47,6 +50,7 @@ class Line extends Element {
      */
     changeEnd(end: Coordinate) {
         this.coords[1] = end;
+        this.end = end;
         canvas.draw();
     }
 
@@ -59,6 +63,44 @@ class Line extends Element {
             class: 'Line',
             dados: JSON.stringify(this),
         };
+    }
+
+    /**
+     * isSelected
+     *
+     * @param {SelectedArea} area
+     * @return {boolean}
+     */
+    isSelected(area: SelectedArea) {
+        return lineIntersectionChecker(
+            this.start.x,
+            this.start.y,
+            this.end.x,
+            this.end.y,
+            area,
+        );
+    }
+
+    /**
+     * select
+     */
+    select() {
+        this.colors = this.colors.map(() => {
+            return {
+                red: 255,
+                green: 255,
+                blue: 255,
+            };
+        });
+    }
+
+    /**
+     * select
+     */
+    deselect() {
+        this.colors = this.colors.map(() => {
+            return this.color;
+        });
     }
 }
 

@@ -3,4 +3,5 @@ export const selectTypes = {
     DEACTIVATE: 'DEACTIVATE',
     TOGGLE: 'TOGGLE',
     SET_AREA: 'SET_AREA',
+    SET_ELEMENTS: 'SET_ELEMENTS',
 };
