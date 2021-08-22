@@ -1,4 +1,6 @@
 import Line from './line';
+import canvas from '../canvas';
+import {degreesToRadians, multiplyVectorByMatrix} from '../../utils';
 
 /**
  * Polyline
@@ -116,6 +118,58 @@ class Polyline {
     }
 
     /**
+     * getArea
+     * @return {number}
+     */
+    getArea() {
+        let area = 0;
+        let i = 0;
+        let j = 0;
+        let point1: Coordinate;
+        let point2: Coordinate;
+
+        const points = this.lines.map((line) => line.getCoords()).flat();
+
+        for (i = 0, j = points.length - 1; i < points.length; j = i, i++) {
+            point1 = points[i];
+            point2 = points[j];
+            area += point1.x * point2.y;
+            area -= point1.y * point2.x;
+        }
+        area /= 2;
+
+        return area;
+    }
+
+    /**
+     * getCentroid
+     * @return {Coordinate}
+     */
+    getCentroid() {
+        let x = 0;
+        let y = 0;
+        let i;
+        let j;
+        let f;
+        let point1:Coordinate;
+        let point2:Coordinate;
+
+        const points = this.lines.map((line) => line.getCoords()).flat();
+
+        for (i = 0, j = points.length - 1; i < points.length; j = i, i++) {
+            point1 = points[i];
+            point2 = points[j];
+            f = point1.x * point2.y - point2.x * point1.y;
+            x += (point1.x + point2.x) * f;
+            y += (point1.y + point2.y) * f;
+        }
+
+        f = this.getArea() * 6;
+
+        return {x: x / f, y: y / f};
+    }
+
+    /**
      * isSelected
      *
      * @param {SelectedArea} area
@@ -144,6 +198,37 @@ class Polyline {
     deselect() {
         this.lines.forEach((line) => {
             line.deselect();
+        });
+    }
+
+    /**
+     * transform
+     * @param {Coordinate} translation
+     * @param {Coordinate} scaling
+     * @param {number} rotation
+     */
+    transform(translation: Coordinate, scaling: Coordinate, rotation: number) {
+        const center = this.getCentroid();
+        const translationMatrix = canvas.m3.translation(
+            center.x + translation.x,
+            center.y + translation.y,
+        );
+        const rotationMatrix = canvas.m3.rotation(degreesToRadians(rotation));
+        const scaleMatrix = canvas.m3.scaling(scaling.x, scaling.y);
+        const moveOrigin = canvas.m3.translation(
+            -center.x,
+            -center.y,
+        );
+
+        let matrix = canvas.m3.multiply(translationMatrix, rotationMatrix);
+        matrix = canvas.m3.multiply(matrix, scaleMatrix);
+        matrix = canvas.m3.multiply(matrix, scaleMatrix);
+        matrix = canvas.m3.multiply(matrix, moveOrigin);
+
+        this.lines.forEach((line) => {
+            line.coords = line.originalCoords.map((coord) =>
+                multiplyVectorByMatrix(coord, matrix),
+            );
         });
     }
 }

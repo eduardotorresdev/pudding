@@ -1,8 +1,11 @@
+import {degreesToRadians, multiplyVectorByMatrix} from '../../utils';
+import canvas from '../canvas';
 /**
  * Element
  */
 class Element {
     coords: Coordinate[] = [];
+    originalCoords: Coordinate[] = [];
     colors: Color[] = [];
 
     /**
@@ -11,6 +14,7 @@ class Element {
      */
     addCoord(coord: Coordinate) {
         this.coords.push(coord);
+        this.originalCoords.push(coord);
     }
 
     /**
@@ -35,6 +39,34 @@ class Element {
      */
     getColors() {
         return this.colors;
+    }
+
+    /**
+     * transform
+     * @param {Coordinate} translation
+     * @param {Coordinate} scaling
+     * @param {number} rotation
+     */
+    transform(translation: Coordinate, scaling: Coordinate, rotation: number) {
+        const translationMatrix = canvas.m3.translation(
+            this.originalCoords[0].x + translation.x,
+            this.originalCoords[0].y + translation.y,
+        );
+        const rotationMatrix = canvas.m3.rotation(degreesToRadians(rotation));
+        const scaleMatrix = canvas.m3.scaling(scaling.x, scaling.y);
+        const moveOrigin = canvas.m3.translation(
+            -this.originalCoords[0].x,
+            -this.originalCoords[0].y,
+        );
+
+        let matrix = canvas.m3.multiply(translationMatrix, rotationMatrix);
+        matrix = canvas.m3.multiply(matrix, scaleMatrix);
+        matrix = canvas.m3.multiply(matrix, scaleMatrix);
+        matrix = canvas.m3.multiply(matrix, moveOrigin);
+
+        this.coords = this.originalCoords.map((coord) =>
+            multiplyVectorByMatrix(coord, matrix),
+        );
     }
 }
 

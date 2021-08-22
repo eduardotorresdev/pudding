@@ -78,3 +78,27 @@ export function pointIntersectionChecker(
         coord.y < area.ymax
     );
 }
+
+/**
+ * degreesToRadians
+ * @param {number} degrees
+ * @return {number}
+ */
+export function degreesToRadians(degrees: number) {
+    const pi = Math.PI;
+
+    return degrees * (pi / 180);
+}
+
+/**
+ * multiplyVectorByMatrix
+ * @param {number[]} vector
+ * @param {number[]} matrix
+ * @return {number[]}
+ */
+export function multiplyVectorByMatrix(vector: Coordinate, matrix: number[]) {
+    return {
+        x: matrix[0] * vector.x + matrix[3] * vector.y + matrix[6] * 1,
+        y: matrix[1] * vector.x + matrix[4] * vector.y + matrix[7] * 1,
+    };
+}

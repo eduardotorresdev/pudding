@@ -1,6 +1,6 @@
 import Element from './element';
 import canvas from '../canvas';
-import {lineIntersectionChecker} from './utils';
+import {lineIntersectionChecker} from '../../utils';
 /**
  * Line
  */
@@ -29,8 +29,8 @@ class Line extends Element {
         this.start = start;
         this.end = end;
         this.color = color;
-        this.coords.push(this.start);
-        this.coords.push(this.end);
+        this.addCoord(this.start);
+        this.addCoord(this.end);
         this.colors.push(color, color);
     }
 
@@ -50,6 +50,7 @@ class Line extends Element {
      */
     changeEnd(end: Coordinate) {
         this.coords[1] = end;
+        this.originalCoords[1] = end;
         this.end = end;
         canvas.draw();
     }

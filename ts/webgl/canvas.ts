@@ -43,24 +43,17 @@ class Drawer {
         projection: function(width: number, height: number) {
             return [2 / width, 0, 0, 0, -2 / height, 0, -1, 1, 1];
         },
-        identity: function() {
-            return [1, 0, 0, 0, 1, 0, 0, 0, 1];
-        },
-
         translation: function(tx: number, ty: number) {
             return [1, 0, 0, 0, 1, 0, tx, ty, 1];
         },
-
         rotation: function(angleInRadians: number) {
             const c = Math.cos(angleInRadians);
             const s = Math.sin(angleInRadians);
             return [c, -s, 0, s, c, 0, 0, 0, 1];
         },
-
         scaling: function(sx: number, sy: number) {
             return [sx, 0, 0, 0, sy, 0, 0, 0, 1];
         },
-
         multiply: function(a: number[], b: number[]) {
             const a00 = a[0 * 3 + 0];
             const a01 = a[0 * 3 + 1];
@@ -190,25 +183,13 @@ class Drawer {
         this.gl.enableVertexAttribArray(this.coord);
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
+
         const projectionMatrix = this.m3.projection(
             this.canvas.clientWidth,
             this.canvas.clientHeight,
         );
-        const translationMatrix = this.m3.translation(
-            this.translation.x + 75,
-            this.translation.y + 75,
-        );
-        const rotationMatrix = this.m3.rotation(this.angleInRadians);
-        const scaleMatrix = this.m3.scaling(this.scalation.x, this.scalation.y);
-        const moveOriginMatrix = this.m3.translation(-75, -75);
 
-        // Multiply the matrices.
-        let matrix = this.m3.multiply(projectionMatrix, translationMatrix);
-        matrix = this.m3.multiply(matrix, rotationMatrix);
-        matrix = this.m3.multiply(matrix, scaleMatrix);
-        matrix = this.m3.multiply(matrix, moveOriginMatrix);
-        // Set the matrix.
-        this.gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
+        this.gl.uniformMatrix3fv(this.matrixLocation, false, projectionMatrix);
 
         if (elements.points.length > 0) {
             this.gl.drawElements(
@@ -239,7 +220,8 @@ class Drawer {
                     this.gl.UNSIGNED_SHORT,
                     (elements.points.length +
                         elements.lines.length * 2 +
-                        polylineLength) * 2,
+                        polylineLength) *
+                        2,
                 );
                 polylineLength += length;
             });
@@ -256,7 +238,9 @@ class Drawer {
                     this.gl.UNSIGNED_SHORT,
                     (elements.points.length +
                         elements.lines.length * 2 +
-                        polylineLength + lastLength) * 2,
+                        polylineLength +
+                        lastLength) *
+                        2,
                 );
                 lastLength += length;
             });

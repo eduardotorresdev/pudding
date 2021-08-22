@@ -15,9 +15,9 @@ class Polygon extends Polyline {
     constructor(
         start: Coordinate,
         color: Color = {
-            red: 110,
-            green: 39,
-            blue: 204,
+            red: 177,
+            green: 82,
+            blue: 255,
         },
     ) {
         super(start, color);

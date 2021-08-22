@@ -1,5 +1,5 @@
 import Element from './element';
-import {pointIntersectionChecker} from './utils';
+import {pointIntersectionChecker} from '../../utils';
 
 /**
  * Point
@@ -10,11 +10,11 @@ class Point extends Element {
 
     /**
      *
-     * @param {Coordinate} coords
+     * @param {Coordinate} coord
      * @param {Color} color
      */
     constructor(
-        coords: Coordinate,
+        coord: Coordinate,
         color: Color = {
             red: 255,
             green: 213,
@@ -24,8 +24,8 @@ class Point extends Element {
         super();
 
         this.color = color;
-        this.coords.push(coords);
-        this.colors.push(color);
+        this.addCoord(coord);
+        this.addColor(color);
     }
 
     /**
