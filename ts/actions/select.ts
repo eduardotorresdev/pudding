@@ -40,10 +40,4 @@ export const selectActions = {
             elements,
         };
     },
-    addElements: function(elements: Array<Point | Line | Polyline | Polygon>) {
-        return {
-            type: selectTypes.ADD_ELEMENTS,
-            elements,
-        };
-    },
 };

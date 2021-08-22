@@ -10,7 +10,7 @@ interface SelectAction {
     ymin?: number;
     xmax?: number;
     ymax?: number;
-    elements?: Array<Point | Line | Polyline | Polygon>;
+    elements?: Array<Point | Line | Polyline | Polygon>
 }
 
 interface SelectState {
@@ -55,12 +55,6 @@ const selectReducer = (state = initialState, action: SelectAction) => {
         state = {
             ...state,
             elements: action.elements,
-        };
-        return state;
-    case selectTypes.ADD_ELEMENTS:
-        state = {
-            ...state,
-            elements: state.elements.concat(action.elements),
         };
         return state;
     default:

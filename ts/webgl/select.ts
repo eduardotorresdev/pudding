@@ -72,20 +72,6 @@ canvas.addEventListener('mousemove', (e: MouseEvent) => {
     }
 });
 
-let appendMode = false;
-
-window.addEventListener('keydown', (e) => {
-    if (selecting && e.key === 'Control' && !appendMode) {
-        appendMode = true;
-    }
-});
-
-window.addEventListener('keyup', (e) => {
-    if (e.key === 'Control' && appendMode) {
-        appendMode = false;
-    }
-});
-
 /**
  * clearSelection
  */
@@ -99,21 +85,18 @@ function clearSelection() {
     const ymin = areaRect.top - canvasRect.top;
     const ymax = areaRect.height + ymin;
 
-    const matches = elements.getSelecteds({
-        xmin,
-        xmax,
-        ymin,
-        ymax,
-    });
-
-    if (appendMode) {
-        store.dispatch(selectActions.addElements(matches));
-    } else {
-        store.dispatch(selectActions.setElements(matches));
-    }
+    store.dispatch(
+        selectActions.setElements(
+            elements.getSelecteds({
+                xmin,
+                xmax,
+                ymin,
+                ymax,
+            }),
+        ),
+    );
 
     document.body.removeChild(selectionArea);
-    appendMode = false;
 }
 
 canvas.addEventListener('mouseup', clearSelection);

@@ -133,31 +133,20 @@ class Elements {
      */
     getSelecteds(area: SelectedArea) {
         const selecteds = this.list.filter((element) => {
-            return element.isSelected(area);
+            if (element.isSelected(area)) {
+                element.select();
+
+                return true;
+            }
+
+            element.deselect();
+
+            return false;
         });
 
-        return selecteds;
-    }
+        canvas.draw();
 
-    /**
-     *  getMatrices
-     * @return {number}
-     */
-    getMatrices() {
-        let data:number[] = [];
-        [this.points, this.lines, this.polylines, this.polygons]
-            .flat()
-            .forEach((element) => {
-                data = data.concat(
-                    element
-                        .getCoords()
-                        .map(() => {
-                            return element.matrix;
-                        })
-                        .flat(),
-                );
-            });
-        return data;
+        return selecteds;
     }
 
     /**
