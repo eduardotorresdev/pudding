@@ -1,5 +1,6 @@
 import Element from './element';
 import canvas from '../canvas';
+import selectWatcher from '../../utils/selectWatcher';
 import {lineIntersectionChecker} from '../../utils';
 /**
  * Line
@@ -29,9 +30,14 @@ class Line extends Element {
         this.start = start;
         this.end = end;
         this.color = color;
-        this.addCoord(this.start);
-        this.addCoord(this.end);
+        this.addCoord(start);
+        this.addCoord(end);
         this.colors.push(color, color);
+
+        selectWatcher.addCallback(() => {
+            this.start = this.coords[0];
+            this.end = this.coords[1];
+        });
     }
 
     /**
@@ -49,9 +55,9 @@ class Line extends Element {
      * @param {Coordinates} end
      */
     changeEnd(end: Coordinate) {
-        this.coords[1] = end;
-        this.originalCoords[1] = end;
         this.end = end;
+        this.coords[1] = this.end;
+        this.originalCoords[1] = this.end;
         canvas.draw();
     }
 
@@ -62,7 +68,15 @@ class Line extends Element {
     export() {
         return {
             class: 'Line',
-            dados: JSON.stringify(this),
+            dados: JSON.stringify({
+                ...this,
+                originalCoords: this.coords,
+                colors: this.colors.map(() => ({
+                    red: 255,
+                    green: 0,
+                    blue: 100,
+                })),
+            }),
         };
     }
 
@@ -102,6 +116,14 @@ class Line extends Element {
         this.colors = this.colors.map(() => {
             return this.color;
         });
+    }
+
+    /**
+     * fireTransform
+     */
+    fireTransform() {
+        this.start = this.coords[0];
+        this.end = this.coords[1];
     }
 }
 

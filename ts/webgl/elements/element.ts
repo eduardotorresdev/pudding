@@ -1,4 +1,5 @@
 import {degreesToRadians, multiplyVectorByMatrix} from '../../utils';
+import selectWatcher from '../../utils/selectWatcher';
 import canvas from '../canvas';
 /**
  * Element
@@ -7,6 +8,15 @@ class Element {
     coords: Coordinate[] = [];
     originalCoords: Coordinate[] = [];
     colors: Color[] = [];
+
+    /**
+     *
+     */
+    constructor() {
+        selectWatcher.addCallback(() => {
+            this.originalCoords = this.coords;
+        });
+    }
 
     /**
      * addCoord
@@ -67,7 +77,13 @@ class Element {
         this.coords = this.originalCoords.map((coord) =>
             multiplyVectorByMatrix(coord, matrix),
         );
+        this.fireTransform();
     }
+
+    /**
+     * fireTransform
+     */
+    fireTransform() {}
 }
 
 export default Element;
