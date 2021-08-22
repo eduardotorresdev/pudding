@@ -78,3 +78,4 @@ export function pointIntersectionChecker(
         coord.y < area.ymax
     );
 }
+

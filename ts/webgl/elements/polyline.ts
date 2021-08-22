@@ -1,3 +1,4 @@
+import canvas from '../canvas';
 import Line from './line';
 
 /**
@@ -7,6 +8,7 @@ class Polyline {
     order: number = 3;
     initialLine: Line;
     currentLine: Line;
+    matrix: number[];
     lines: Line[] = [];
     color: Color;
     /**
@@ -26,6 +28,18 @@ class Polyline {
         );
         this.initialLine = this.currentLine;
         this.lines.push(this.currentLine);
+
+        const translationMatrix = canvas.m3.translation(100, 100);
+        const rotationMatrix = canvas.m3.rotation(canvas.angleInRadians);
+        const scaleMatrix = canvas.m3.scaling(
+            canvas.scalation.x,
+            canvas.scalation.y,
+        );
+        const moveOriginMatrix = canvas.m3.translation(-75, -75);
+
+        this.matrix = canvas.m3.multiply(translationMatrix, rotationMatrix);
+        this.matrix = canvas.m3.multiply(this.matrix, scaleMatrix);
+        this.matrix = canvas.m3.multiply(this.matrix, moveOriginMatrix);
     }
 
     /**

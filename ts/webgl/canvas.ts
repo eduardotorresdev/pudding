@@ -25,6 +25,7 @@ class Drawer {
     vertexBuffer: WebGLBuffer;
     indexBuffer: WebGLBuffer;
     colorBuffer: WebGLBuffer;
+    matricesBuffer: WebGLBuffer;
     vertShader: WebGLShader;
     fragShader: WebGLShader;
     shaderProgram: WebGLProgram;
@@ -126,9 +127,9 @@ class Drawer {
     }
 
     draw() {
-        this.bindSquare();
-        this.bindColors();
-        this.bindIndices();
+        this.vertexBuffer = this.gl.createBuffer();
+        this.colorBuffer = this.gl.createBuffer();
+        this.indexBuffer = this.gl.createBuffer();
         this.createVertexShader();
         this.createFragShader();
 
@@ -160,6 +161,7 @@ class Drawer {
             new Float32Array(elements.getData()),
             this.gl.DYNAMIC_DRAW,
         );
+
         this.coord = this.gl.getAttribLocation(
             this.shaderProgram,
             'coordinates',
@@ -171,10 +173,36 @@ class Drawer {
             'u_matrix',
         );
 
+        const matrixLoc = this.gl.getAttribLocation(
+            this.shaderProgram,
+            'z_matrix',
+        );
+
+        this.matricesBuffer = this.gl.createBuffer();
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.matricesBuffer);
+        this.gl.bufferData(
+            this.gl.ARRAY_BUFFER,
+            new Float32Array(elements.getMatrices()),
+            this.gl.DYNAMIC_DRAW,
+        );
+
+        for (let ii = 0; ii < 3; ++ii) {
+            this.gl.enableVertexAttribArray(matrixLoc + ii);
+            this.gl.vertexAttribPointer(
+                matrixLoc + ii,
+                3,
+                this.gl.FLOAT,
+                false,
+                36,
+                ii * 12,
+            );
+        }
+
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
         const color = this.gl.getAttribLocation(this.shaderProgram, 'color');
         this.gl.vertexAttribPointer(color, 3, this.gl.FLOAT, false, 0, 0);
         this.gl.enableVertexAttribArray(color);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
 
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
         this.gl.clearColor(0, 0, 0, 0);
@@ -207,6 +235,7 @@ class Drawer {
         matrix = this.m3.multiply(matrix, rotationMatrix);
         matrix = this.m3.multiply(matrix, scaleMatrix);
         matrix = this.m3.multiply(matrix, moveOriginMatrix);
+
         // Set the matrix.
         this.gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
 
@@ -239,7 +268,8 @@ class Drawer {
                     this.gl.UNSIGNED_SHORT,
                     (elements.points.length +
                         elements.lines.length * 2 +
-                        polylineLength) * 2,
+                        polylineLength) *
+                        2,
                 );
                 polylineLength += length;
             });
@@ -256,7 +286,9 @@ class Drawer {
                     this.gl.UNSIGNED_SHORT,
                     (elements.points.length +
                         elements.lines.length * 2 +
-                        polylineLength + lastLength) * 2,
+                        polylineLength +
+                        lastLength) *
+                        2,
                 );
                 lastLength += length;
             });
@@ -285,12 +317,13 @@ class Drawer {
      */
     createVertexShader() {
         const vertCode =
+            'attribute mat3 z_matrix;' +
             'attribute vec2 coordinates;' +
             'uniform mat3 u_matrix;' +
             'attribute vec3 color;' +
             'varying vec3 vColor;' +
             'void main(void) {' +
-            'gl_Position = vec4(u_matrix * vec3(coordinates, 1), 1);' +
+            'gl_Position = vec4(z_matrix * vec3(coordinates, 1), 1);' +
             'gl_PointSize = 5.0;' +
             'vColor = color;' +
             '}';

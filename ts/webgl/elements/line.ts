@@ -32,6 +32,33 @@ class Line extends Element {
         this.coords.push(this.start);
         this.coords.push(this.end);
         this.colors.push(color, color);
+
+        setTimeout(() => {
+            const projectionMatrix = canvas.m3.projection(
+                canvas.canvas.clientWidth,
+                canvas.canvas.clientHeight,
+            );
+            const translationMatrix = canvas.m3.translation(
+                this.start.x + 200,
+                this.start.y + 100,
+            );
+            const rotationMatrix = canvas.m3.rotation(1.57);
+            const scaleMatrix = canvas.m3.scaling(1, 1);
+            const moveOriginMatrix = canvas.m3.translation(
+                -this.start.x,
+                -this.start.y,
+            );
+            // Multiply the matrices.
+            this.matrix = canvas.m3.multiply(
+                projectionMatrix,
+                translationMatrix,
+            );
+            this.matrix = canvas.m3.multiply(this.matrix, rotationMatrix);
+            this.matrix = canvas.m3.multiply(this.matrix, scaleMatrix);
+            this.matrix = canvas.m3.multiply(this.matrix, moveOriginMatrix);
+
+            canvas.draw();
+        }, 3000);
     }
 
     /**
