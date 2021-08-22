@@ -1,6 +1,6 @@
 import canvas from '../webgl/canvas';
-import selectWatcher from '../utils/selectWatcher';
 import {store} from '../store';
+import SelectWatcher from '../utils/selectWatcher';
 
 const translationUp = document.querySelector('.translation__up');
 const translationRight = document.querySelector('.translation__right');
@@ -16,7 +16,8 @@ let scaleX = 1;
 let scaleY = 1;
 let rotation = 0;
 
-selectWatcher.addCallback(() => {
+const watcher = new SelectWatcher();
+watcher.addCallback(() => {
     translateX = 0;
     translateY = 0;
     scaleX = 1;

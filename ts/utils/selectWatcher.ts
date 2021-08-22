@@ -1,5 +1,4 @@
 import {store} from '../store';
-
 /**
  * SelectWatcher
  */
@@ -29,6 +28,4 @@ class SelectWatcher {
     }
 }
 
-const instance = new SelectWatcher();
-
-export default instance;
+export default SelectWatcher;

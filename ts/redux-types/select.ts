@@ -4,4 +4,5 @@ export const selectTypes = {
     TOGGLE: 'TOGGLE',
     SET_AREA: 'SET_AREA',
     SET_ELEMENTS: 'SET_ELEMENTS',
+    ADD_ELEMENTS: 'ADD_ELEMENTS',
 };

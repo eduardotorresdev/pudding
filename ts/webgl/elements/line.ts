@@ -1,7 +1,7 @@
 import Element from './element';
 import canvas from '../canvas';
-import selectWatcher from '../../utils/selectWatcher';
 import {lineIntersectionChecker} from '../../utils';
+import SelectWatcher from '../../utils/selectWatcher';
 /**
  * Line
  */
@@ -34,7 +34,8 @@ class Line extends Element {
         this.addCoord(end);
         this.colors.push(color, color);
 
-        selectWatcher.addCallback(() => {
+        const watcher = new SelectWatcher();
+        watcher.addCallback(() => {
             this.start = this.coords[0];
             this.end = this.coords[1];
         });

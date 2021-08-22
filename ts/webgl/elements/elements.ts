@@ -133,18 +133,8 @@ class Elements {
      */
     getSelecteds(area: SelectedArea) {
         const selecteds = this.list.filter((element) => {
-            if (element.isSelected(area)) {
-                element.select();
-
-                return true;
-            }
-
-            element.deselect();
-
-            return false;
+            return element.isSelected(area);
         });
-
-        canvas.draw();
 
         return selecteds;
     }

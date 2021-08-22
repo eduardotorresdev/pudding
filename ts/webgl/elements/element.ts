@@ -1,5 +1,5 @@
 import {degreesToRadians, multiplyVectorByMatrix} from '../../utils';
-import selectWatcher from '../../utils/selectWatcher';
+import SelectWatcher from '../../utils/selectWatcher';
 import canvas from '../canvas';
 /**
  * Element
@@ -13,7 +13,8 @@ class Element {
      *
      */
     constructor() {
-        selectWatcher.addCallback(() => {
+        const watcher = new SelectWatcher();
+        watcher.addCallback(() => {
             this.originalCoords = this.coords;
         });
     }
