@@ -7,20 +7,20 @@ const fechoPontos = document.querySelector('.fecho__pontos');
 const fechoSelecionados = document.querySelector('.fecho__selecionados');
 
 fechoPontos.addEventListener('click', () => {
-    const points = elements.points.map((point) => point.coords[0]);
+    const points = elements.points.map((point) => point.getCoords()[0]);
 
     if (points.length === 0) return;
 
     const polygonPoints: Coordinate[] = quickHull(points);
 
     const polygon = new Polygon(polygonPoints[0]);
-    elements.addElement(polygon);
-    polygon.changeCurrentLineEnd(polygonPoints[1]);
 
-    for (let i = 1; i <= polygonPoints.length / 2; i++) {
-        polygon.addLine(polygonPoints[i]);
-        polygon.changeCurrentLineEnd(polygonPoints[i + 1]);
+    for (let i = 1; i < polygonPoints.length; i++) {
+        polygon.addLine(polygonPoints[i - 1]);
+        polygon.changeCurrentLineEnd(polygonPoints[i]);
     }
+
+    elements.addElement(polygon);
 });
 
 fechoSelecionados.addEventListener('click', () => {
@@ -41,11 +41,11 @@ fechoSelecionados.addEventListener('click', () => {
     }
 
     const polygon = new Polygon(polygonPoints[0]);
-    elements.addElement(polygon);
-    polygon.changeCurrentLineEnd(polygonPoints[1]);
 
-    for (let i = 1; i <= polygonPoints.length / 2; i++) {
-        polygon.addLine(polygonPoints[i]);
-        polygon.changeCurrentLineEnd(polygonPoints[i + 1]);
+    for (let i = 1; i < polygonPoints.length; i++) {
+        polygon.addLine(polygonPoints[i - 1]);
+        polygon.changeCurrentLineEnd(polygonPoints[i]);
     }
+
+    elements.addElement(polygon);
 });

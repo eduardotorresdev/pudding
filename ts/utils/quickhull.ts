@@ -19,15 +19,12 @@ export function quickHull(points: Coordinate[]) {
     // if there are only three points, this is a triangle,
     // which by definition is already a hull
     if (points.length == 3) {
-        points.push(points[0]); // close the poly
         return points;
     }
     const baseline = getMinMaxPoints(points);
     addSegments(baseline, points);
     // reverse line direction to get points on other side
     addSegments([baseline[1], baseline[0]], points);
-    // add the last point to make a closed loop
-    hull.push(hull[0]);
     return hull;
 }
 
