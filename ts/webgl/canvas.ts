@@ -153,6 +153,7 @@ class Drawer {
             new Float32Array(elements.getData()),
             this.gl.DYNAMIC_DRAW,
         );
+
         this.coord = this.gl.getAttribLocation(
             this.shaderProgram,
             'coordinates',

@@ -28,9 +28,23 @@ class Polygon extends Polyline {
      * @return {Object}
      */
     export() {
+        const lines = this.lines.map((line) => {
+            return {
+                ...line,
+                originalCoords: line.coords,
+                start: line.coords[0],
+                end: line.coords[1],
+                colors: line.colors.map(() => ({
+                    red: 177,
+                    green: 82,
+                    blue: 255,
+                })),
+            };
+        });
+
         return {
             class: 'Polygon',
-            dados: JSON.stringify(this),
+            dados: JSON.stringify({...this, lines}),
         };
     }
 

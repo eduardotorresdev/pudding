@@ -112,49 +112,35 @@
                     <div class="transformation__form">
                         <div class="input__group">
                             <label for="scale_x">x</label>
-                            <input type="number" id="scale_x" class="input" value="1">
+                            <input type="number" id="scale_x" class="input" step="0.1" value="1" autocomplete="off">
                         </div>
                         <div class="input__group">
                             <label for="scale_y">y</label>
-                            <input type="number" id="scale_y" class="input" value="1">
+                            <input type="number" id="scale_y" class="input" step="0.1" value="1" autocomplete="off">
                         </div>
                     </div>
                 </div>
                 <div class="transformation__group">
                     <h2 class="transformation__title">Rotação</h2>
                     <div class="checkbox transformation__checkbox">
-                        <input type="checkbox" id="rotation__central" class="checkbox__input" checked="checked">
-                        <label for="rotation__central" class="checkbox__label">Ponto central</label>
+                        <input type="checkbox" id="rotation_central" class="checkbox__input" checked="checked" autocomplete="off">
+                        <label for="rotation_central" class="checkbox__label">Ponto central</label>
                     </div>
                     <div class="transformation__form">
                         <div class="input__group">
                             <label for="rotation_x">x</label>
-                            <input type="number" id="rotation_x" class="input" disabled="disabled">
+                            <input type="number" id="rotation_x" class="input" disabled="disabled" autocomplete="off">
                         </div>
                         <div class="input__group">
                             <label for="rotation_y">y</label>
-                            <input type="number" id="rotation_y" class="input" disabled="disabled">
+                            <input type="number" id="rotation_y" class="input" disabled="disabled" autocomplete="off">
                         </div>
                     </div>
                     <div class="transformation__slider slider">
-                        <input type="range" class="slider__input" min="0" max="360" value="0">
+                        <input type="range" id="rotation" class="slider__input" min="0" max="360" value="0" autocomplete="off">
                         <div class="slider__marker"></div>
                         <div class="slider__progress"></div>
                     </div>
-                </div>
-                <div class="transformation__group">
-                    <h2 class="transformation__title">Espelhamento</h2>
-                    <div class="transformation__form">
-                        <div class="input__group">
-                            <label for="mirror_x">x</label>
-                            <input type="number" id="mirror_x" class="input" value="1">
-                        </div>
-                        <div class="input__group ">
-                            <label for="mirror_y">y</label>
-                            <input type="number" id="mirror_y" class="input" value="">
-                        </div>
-                    </div>
-                    <button class="btn transformation__espelhar btn-secondary">Espelhar</button>
                 </div>
             </aside>
             <div class="translation">

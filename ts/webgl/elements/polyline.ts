@@ -6,6 +6,7 @@ import {degreesToRadians, multiplyVectorByMatrix} from '../../utils';
  * Polyline
  */
 class Polyline {
+    center: Coordinate;
     order: number = 3;
     initialLine: Line;
     currentLine: Line;
@@ -28,6 +29,8 @@ class Polyline {
         );
         this.initialLine = this.currentLine;
         this.lines.push(this.currentLine);
+
+        this.center = this.getCentroid();
     }
 
     /**
@@ -41,6 +44,7 @@ class Polyline {
             {x: start.x + 1, y: start.y + 1},
             this.color,
         );
+        this.center = this.getCentroid();
         this.lines.push(this.currentLine);
     }
 
@@ -51,6 +55,7 @@ class Polyline {
      */
     changeCurrentLineEnd(end: Coordinate) {
         this.currentLine.changeEnd(end);
+        this.center = this.getCentroid();
     }
 
     /**
@@ -72,9 +77,23 @@ class Polyline {
      * @return {Object}
      */
     export() {
+        const lines = this.lines.map((line) => {
+            return {
+                ...line,
+                originalCoords: line.coords,
+                start: line.coords[0],
+                end: line.coords[1],
+                colors: line.colors.map(() => ({
+                    red: 50,
+                    green: 217,
+                    blue: 133,
+                })),
+            };
+        });
+
         return {
             class: 'Polyline',
-            dados: JSON.stringify(this),
+            dados: JSON.stringify({...this, lines}),
         };
     }
 
@@ -151,8 +170,8 @@ class Polyline {
         let i;
         let j;
         let f;
-        let point1:Coordinate;
-        let point2:Coordinate;
+        let point1: Coordinate;
+        let point2: Coordinate;
 
         const points = this.lines.map((line) => line.getCoords()).flat();
 
@@ -190,6 +209,7 @@ class Polyline {
         this.lines.forEach((line) => {
             line.select();
         });
+        this.center = this.getCentroid();
     }
 
     /**
@@ -206,22 +226,27 @@ class Polyline {
      * @param {Coordinate} translation
      * @param {Coordinate} scaling
      * @param {number} rotation
+     * @param {Coordinate} center
      */
-    transform(translation: Coordinate, scaling: Coordinate, rotation: number) {
-        const center = this.getCentroid();
+    transform(
+        translation: Coordinate,
+        scaling: Coordinate,
+        rotation: number,
+        center: Coordinate | null = this.center,
+    ) {
+        if (!center) {
+            center = this.center;
+        }
+
         const translationMatrix = canvas.m3.translation(
             center.x + translation.x,
             center.y + translation.y,
         );
         const rotationMatrix = canvas.m3.rotation(degreesToRadians(rotation));
         const scaleMatrix = canvas.m3.scaling(scaling.x, scaling.y);
-        const moveOrigin = canvas.m3.translation(
-            -center.x,
-            -center.y,
-        );
+        const moveOrigin = canvas.m3.translation(-center.x, -center.y);
 
         let matrix = canvas.m3.multiply(translationMatrix, rotationMatrix);
-        matrix = canvas.m3.multiply(matrix, scaleMatrix);
         matrix = canvas.m3.multiply(matrix, scaleMatrix);
         matrix = canvas.m3.multiply(matrix, moveOrigin);
 

@@ -68,6 +68,7 @@ canvas.addEventListener('contextmenu', (e: MouseEvent) => {
     e.preventDefault();
 
     isDrawing = false;
+    currentLine = null;
     currentPolyline = null;
     currentPolygon = null;
 });

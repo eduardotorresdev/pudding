@@ -15,6 +15,9 @@ let translateY = 0;
 let scaleX = 1;
 let scaleY = 1;
 let rotation = 0;
+let rotationCenter = true;
+let rotationX = 0;
+let rotationY = 0;
 
 const watcher = new SelectWatcher();
 watcher.addCallback(() => {
@@ -121,8 +124,86 @@ window.addEventListener('keydown', (e) => {
 });
 
 window.addEventListener('keyup', (e) => {
+    if (e.repeat) return;
+
     if (keyMap[e.key]) {
         translating--;
         cancelAnimationFrame(animationFrame);
     }
+});
+
+const scaleXInput: HTMLInputElement | null = document.querySelector('#scale_x');
+const scaleYInput: HTMLInputElement | null = document.querySelector('#scale_y');
+
+/**
+ * scaleTo
+ */
+function toScale() {
+    scaleX = parseFloat(scaleXInput.value);
+    scaleY = parseFloat(scaleYInput.value);
+
+    const elements = store.getState().select.elements;
+    elements.forEach((element) => {
+        element.transform(
+            {x: translateX, y: translateY},
+            {
+                x: scaleX,
+                y: scaleY,
+            },
+            rotation,
+        );
+    });
+
+    canvas.draw();
+}
+
+scaleXInput.addEventListener('input', toScale);
+scaleYInput.addEventListener('input', toScale);
+
+const rotationInput: HTMLInputElement | null =
+    document.querySelector('#rotation');
+
+rotationInput.addEventListener('input', () => {
+    rotation = parseInt(rotationInput.value);
+    const elements = store.getState().select.elements;
+    elements.forEach((element) => {
+        element.transform(
+            {x: translateX, y: translateY},
+            {
+                x: scaleX,
+                y: scaleY,
+            },
+            rotation,
+            !rotationCenter ? {x: rotationX, y: rotationY} : null,
+        );
+    });
+
+    canvas.draw();
+});
+
+const rotationCentral: HTMLInputElement | null =
+    document.querySelector('#rotation_central');
+const rotationXInput: HTMLInputElement | null =
+    document.querySelector('#rotation_x');
+const rotationYInput: HTMLInputElement | null =
+    document.querySelector('#rotation_y');
+
+rotationCentral.addEventListener('change', () => {
+    rotationCenter = rotationCentral.checked;
+
+    if (rotationCenter) {
+        rotationXInput.setAttribute('disabled', 'disabled');
+        rotationYInput.setAttribute('disabled', 'disabled');
+    } else {
+        rotationXInput.removeAttribute('disabled');
+        rotationYInput.removeAttribute('disabled');
+    }
+});
+
+rotationXInput.addEventListener('input', () => {
+    rotationX = parseFloat(rotationXInput.value);
+});
+
+rotationYInput.addEventListener('input', () => {
+    rotationY = parseFloat(rotationYInput.value);
 });
