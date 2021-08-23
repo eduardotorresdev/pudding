@@ -1,5 +1,5 @@
 import elements from './webgl/elements/elements';
-import quickHull from 'quickhull';
+import {quickHull} from './utils';
 import Polygon from './webgl/elements/polygon';
 import {store} from './store';
 

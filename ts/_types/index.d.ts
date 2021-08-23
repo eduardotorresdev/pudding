@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 declare module 'quickhull';
+declare module 'd3-delaunay';
 interface Point {
     x: number;
     y: number;

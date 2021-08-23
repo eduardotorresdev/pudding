@@ -1,9 +1,9 @@
 {
-  "name": "@eduardotorres/square",
+  "name": "@eduardotorres/pudding",
   "version": "1.0.0",
-  "description": "Square transformer with WebGL",
+  "description": "WebGL application with Vanilla JavaScript",
   "main": "index.js",
-  "repository": "https://github.com/eduardotorresdev/square",
+  "repository": "https://github.com/eduardotorresdev/pudding",
   "author": "Eduardo Torres <contato@eduardotorres.dev>",
   "license": "MIT",
   "private": true,
@@ -16,9 +16,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
     "core-js": "^3.16.1",
-    "quickhull": "^1.0.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "redux": "^4.1.1",
     "redux-saga": "^1.1.3",
     "regenerator-runtime": "^0.13.9"

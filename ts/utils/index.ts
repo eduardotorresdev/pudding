@@ -1,3 +1,5 @@
+export * from './quickhull';
+
 /**
  * Liang-Barsky function by Daniel White
  *
