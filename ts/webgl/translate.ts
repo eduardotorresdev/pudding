@@ -55,6 +55,7 @@ function translate() {
             {x: translateX, y: translateY},
             {x: scaleX, y: scaleY},
             rotation,
+            !rotationCenter ? {x: rotationX, y: rotationY} : null,
         );
     });
 
@@ -151,6 +152,7 @@ function toScale() {
                 y: scaleY,
             },
             rotation,
+            !rotationCenter ? {x: rotationX, y: rotationY} : null,
         );
     });
 

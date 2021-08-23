@@ -5228,6 +5228,11 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+quickhull@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/quickhull/-/quickhull-1.0.3.tgz#f9560bc72b6e16254f870bbd4dffa91e8968879a"
+  integrity sha512-AQbLaXdzGDJdO9Mu3qY/NY5JWlDqIutCLW8vJbsQTq+/bydIZeltnMVRKCElp81Y5/uRm4Yw/RsMdcltFYsS6w==
+
 randombytes@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"

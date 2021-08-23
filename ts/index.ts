@@ -7,6 +7,7 @@ import './transformation';
 import './slider';
 import './webgl';
 import canvas from './webgl/canvas';
+import './quickhull';
 
 canvas.draw();
 

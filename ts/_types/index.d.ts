@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+declare module 'quickhull';
 interface Point {
     x: number;
     y: number;
@@ -10,7 +11,7 @@ interface Coordinate {
 }
 
 interface Color {
-    red: number,
-    green: number,
-    blue: number
+    red: number;
+    green: number;
+    blue: number;
 }
