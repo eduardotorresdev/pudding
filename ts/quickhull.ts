@@ -13,13 +13,6 @@ fechoPontos.addEventListener('click', () => {
 
     const polygonPoints: Coordinate[] = quickHull(points);
 
-    if (
-        polygonPoints[0].x === polygonPoints[polygonPoints.length - 1].x &&
-        polygonPoints[0].y === polygonPoints[polygonPoints.length - 1].y
-    ) {
-        polygonPoints.pop();
-    }
-
     const polygon = new Polygon(polygonPoints[0]);
     elements.addElement(polygon);
     polygon.changeCurrentLineEnd(polygonPoints[1]);
